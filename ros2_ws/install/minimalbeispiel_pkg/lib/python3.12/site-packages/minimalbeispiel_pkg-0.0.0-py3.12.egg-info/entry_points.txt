@@ -1,0 +1,2 @@
+[console_scripts]
+sub_pose = minimalbeispiel_pkg.subscriber:main
