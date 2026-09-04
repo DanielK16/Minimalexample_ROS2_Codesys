@@ -5,23 +5,23 @@ from geometry_msgs.msg import Twist
 
 import asyncio
 import logging
-from asyncua import Client, ua  # <-- ua hier hinzugefügt
+from asyncua import Client, ua  
 
-class MinimalSubscriber(Node):
+class OPC_UA_Client_Node(Node):
 
     def __init__(self):
-        super().__init__('minimal_subscriber')
+        super().__init__('opc_ua_client_node')
         self.latest_pose = None  
 
-        # Create Publisher
-        self.publisher = self.create_publisher(
+        # Publisher
+        self.cmd_vel_publisher = self.create_publisher(
             Twist,
             '/turtle1/cmd_vel',
             10
         )
 
-        # Create Subscription
-        self.subscription = self.create_subscription(
+        # Subscriber
+        self.pose_subscriber = self.create_subscription(
             Pose,
             'turtle1/pose',
             self.pose_callback,
@@ -31,23 +31,25 @@ class MinimalSubscriber(Node):
     def pose_callback(self, msg):
         self.latest_pose = msg
 
+    # twist message zusammenbauen
     def publish_twist(self, linear_x, angular_z):
         twist_msg = Twist()
         twist_msg.linear.x = float(linear_x)
         twist_msg.angular.z = float(angular_z)
-        self.publisher.publish(twist_msg)
+        self.cmd_vel_publisher.publish(twist_msg)
 
+# Überwacht Änderungen im Adressraum
 class SubscriptionHandler:
-    def __init__(self,ros_node, target_nodes):
+    def __init__(self,ros_node, opc_knoten):
         self.ros_node = ros_node
-        self.target_nodes = target_nodes
+        self.opc_knoten = opc_knoten
         self.current_linear_x = 0.0
         self.current_angular_z = 0.0
 
     def datachange_notification(self, node, val, data):
-        if node == self.target_nodes["linear_x"]:
+        if node == self.opc_knoten["linear_x"]:
             self.current_linear_x = float(val)
-        elif node == self.target_nodes["angular_z"]:
+        elif node == self.opc_knoten["angular_z"]:
             self.current_angular_z = float(val)
         
         
@@ -58,13 +60,13 @@ async def async_main(args=None):
     port = "4840"
     opc_url = f"opc.tcp://{ipaddress}:{port}"
 
-    ros_node = MinimalSubscriber()
+    ros_node = OPC_UA_Client_Node()
 
     async with Client(opc_url) as client:
-        print(f"OPC Client {opc_url} verbunden")
+        print(f"OPC Client: {opc_url} verbunden")
         
-        # 1. OPC-Node holen (hier einheitlicher Name: opc_target_nodes)
-        opc_target_nodes = {
+        # node holen
+        opc_ziel_knoten = {
 
             "x_pose": client.get_node("ns=5;s=AQAAAKbhKnGK9zM6uvotdobvJ2ac8zBxx/c1Zp3vJSW28y9njK04S5nsM3Hp"),
 
@@ -77,9 +79,9 @@ async def async_main(args=None):
             "angular_z": client.get_node("ns=5;s=AQAAAKbhKnGK9zM6uvotdobvJ2ac8zBxx/c1Zp3vJSW24C1wtvUleMfiLnOc7yFmtvlA")
         }
                             
-        handler = SubscriptionHandler(ros_node, opc_target_nodes)
+        handler = SubscriptionHandler(ros_node, opc_ziel_knoten)
         sub = await client.create_subscription(100,handler)
-        await sub.subscribe_data_change([opc_target_nodes["linear_x"], opc_target_nodes["angular_z"]])
+        await sub.subscribe_data_change([opc_ziel_knoten["linear_x"], opc_ziel_knoten["angular_z"]])
 
         try:
             while rclpy.ok():
@@ -87,10 +89,9 @@ async def async_main(args=None):
                 ros_node.publish_twist(handler.current_linear_x,handler.current_angular_z)
                 
                 if ros_node.latest_pose is not None:
-                    # Hier den gleichen Variablennamen (opc_target_nodes) nutzen
-                    await opc_target_nodes["x_pose"].write_value(ua.Variant(float(ros_node.latest_pose.x), ua.VariantType.Float))
-                    await opc_target_nodes["y_pose"].write_value(ua.Variant(float(ros_node.latest_pose.y), ua.VariantType.Float))
-                    await opc_target_nodes["theta_pose"].write_value(ua.Variant(float(ros_node.latest_pose.theta), ua.VariantType.Float))
+                    await opc_ziel_knoten["x_pose"].write_value(ua.Variant(float(ros_node.latest_pose.x), ua.VariantType.Float))
+                    await opc_ziel_knoten["y_pose"].write_value(ua.Variant(float(ros_node.latest_pose.y), ua.VariantType.Float))
+                    await opc_ziel_knoten["theta_pose"].write_value(ua.Variant(float(ros_node.latest_pose.theta), ua.VariantType.Float))
                     
                 await asyncio.sleep(0.01)
                 
