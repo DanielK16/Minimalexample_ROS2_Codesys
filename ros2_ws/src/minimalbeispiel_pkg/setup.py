@@ -24,7 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            "sub_pose = minimalbeispiel_pkg.subscriber:main"
+            "opc_node = minimalbeispiel_pkg.opc_ua_node:main"
         ],
     },
 )

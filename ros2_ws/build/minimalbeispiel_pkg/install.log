@@ -1,7 +1,7 @@
 /Minimalbeispiel_Codesys_ROS2/ros2_ws/install/minimalbeispiel_pkg/lib/python3.12/site-packages/minimalbeispiel_pkg/__init__.py
-/Minimalbeispiel_Codesys_ROS2/ros2_ws/install/minimalbeispiel_pkg/lib/python3.12/site-packages/minimalbeispiel_pkg/subscriber.py
+/Minimalbeispiel_Codesys_ROS2/ros2_ws/install/minimalbeispiel_pkg/lib/python3.12/site-packages/minimalbeispiel_pkg/opc_ua_node.py
 /Minimalbeispiel_Codesys_ROS2/ros2_ws/install/minimalbeispiel_pkg/lib/python3.12/site-packages/minimalbeispiel_pkg/__pycache__/__init__.cpython-312.pyc
-/Minimalbeispiel_Codesys_ROS2/ros2_ws/install/minimalbeispiel_pkg/lib/python3.12/site-packages/minimalbeispiel_pkg/__pycache__/subscriber.cpython-312.pyc
+/Minimalbeispiel_Codesys_ROS2/ros2_ws/install/minimalbeispiel_pkg/lib/python3.12/site-packages/minimalbeispiel_pkg/__pycache__/opc_ua_node.cpython-312.pyc
 /Minimalbeispiel_Codesys_ROS2/ros2_ws/install/minimalbeispiel_pkg/share/ament_index/resource_index/packages/minimalbeispiel_pkg
 /Minimalbeispiel_Codesys_ROS2/ros2_ws/install/minimalbeispiel_pkg/share/minimalbeispiel_pkg/package.xml
 /Minimalbeispiel_Codesys_ROS2/ros2_ws/install/minimalbeispiel_pkg/lib/python3.12/site-packages/minimalbeispiel_pkg-0.0.0-py3.12.egg-info/zip-safe
@@ -11,4 +11,4 @@
 /Minimalbeispiel_Codesys_ROS2/ros2_ws/install/minimalbeispiel_pkg/lib/python3.12/site-packages/minimalbeispiel_pkg-0.0.0-py3.12.egg-info/dependency_links.txt
 /Minimalbeispiel_Codesys_ROS2/ros2_ws/install/minimalbeispiel_pkg/lib/python3.12/site-packages/minimalbeispiel_pkg-0.0.0-py3.12.egg-info/PKG-INFO
 /Minimalbeispiel_Codesys_ROS2/ros2_ws/install/minimalbeispiel_pkg/lib/python3.12/site-packages/minimalbeispiel_pkg-0.0.0-py3.12.egg-info/requires.txt
-/Minimalbeispiel_Codesys_ROS2/ros2_ws/install/minimalbeispiel_pkg/lib/minimalbeispiel_pkg/sub_pose
+/Minimalbeispiel_Codesys_ROS2/ros2_ws/install/minimalbeispiel_pkg/lib/minimalbeispiel_pkg/opc_node

@@ -5,3 +5,9 @@ ros2_ws/log/
 ros2_ws/src/ros_tutorials
 
 # Codesys
+codesys/*.precompilecache
+codesys/*.opt
+codesys/*.~u
+codesys/*.bootinfo
+codesys/*.bootinfo_guids
+codesys/*.compileinfo
