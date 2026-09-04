@@ -1,8 +1,0 @@
-/Minimalbeispiel_Codesys_ROS2/ros2_ws/build/turtlesim/rosidl_adapter/turtlesim:action/RotateAbsolute.idl
-/Minimalbeispiel_Codesys_ROS2/ros2_ws/build/turtlesim/rosidl_adapter/turtlesim:msg/Color.idl
-/Minimalbeispiel_Codesys_ROS2/ros2_ws/build/turtlesim/rosidl_adapter/turtlesim:msg/Pose.idl
-/Minimalbeispiel_Codesys_ROS2/ros2_ws/build/turtlesim/rosidl_adapter/turtlesim:srv/Kill.idl
-/Minimalbeispiel_Codesys_ROS2/ros2_ws/build/turtlesim/rosidl_adapter/turtlesim:srv/SetPen.idl
-/Minimalbeispiel_Codesys_ROS2/ros2_ws/build/turtlesim/rosidl_adapter/turtlesim:srv/Spawn.idl
-/Minimalbeispiel_Codesys_ROS2/ros2_ws/build/turtlesim/rosidl_adapter/turtlesim:srv/TeleportAbsolute.idl
-/Minimalbeispiel_Codesys_ROS2/ros2_ws/build/turtlesim/rosidl_adapter/turtlesim:srv/TeleportRelative.idl

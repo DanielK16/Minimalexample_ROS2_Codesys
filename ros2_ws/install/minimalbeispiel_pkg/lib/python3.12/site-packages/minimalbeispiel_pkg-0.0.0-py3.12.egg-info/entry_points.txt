@@ -1,2 +1,0 @@
-[console_scripts]
-opc_node = minimalbeispiel_pkg.opc_ua_node:main
