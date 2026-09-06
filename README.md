@@ -9,15 +9,15 @@ Das Gesamtsystem besteht aus:
 
 # Installation and Usage
 0. github in wsl workspace clonen
-´´´
+```
 git clone https://github.com/DanielK16/Minimalexample_ROS2_Codesys.git
-´´´
+```
 1. image bauen mit Dockerfile:
 ```
 docker build -t <image_name> .
 ```
 2. image -> container
-´´´
+```
 docker run -it \
   --name minimalbsp_ros2_codesys \
   -e DISPLAY=$DISPLAY \
@@ -25,8 +25,7 @@ docker run -it \
   -v ~/Minimalexample_ROS2_Codesys:/Minimalexample_ROS2_Codesys \
   <image_name> \
   /bin/bash
-´´´
-
+```
 3. Codesys Projekt öffnen und mit Deploy Tool Container einrichten
 
 # Entwicklungsumgebung
@@ -51,8 +50,9 @@ Für Datenaustausch zwischen ROS2 und Codesys gibt es generell 3 Möglichkeiten:
 Entschieden für OPC UA, da industrieller Standard und "einfach" zu implementieren.
 ![Datenaustausch ROS2 und Codesys](/doc/img/Datenaustausch_Codesys_ROS2.png)
 
-Für OPC UA wird die asyncua Bibliothek verwendet.
+Für die OPC UA Kommunikation wird das [opcua-asyncio](https://github.com/FreeOpcUa/opcua-asyncio) verwendet.
 
+https://github.com/FreeOpcUa/opcua-asyncio
 
 # Beispiel
 ![Beispielsdarstellung](/doc/vid/codesys_ros2_minimalbeispiel.gif)
@@ -63,4 +63,34 @@ Dabei wird zunächst auf das topic /tutle1_pose subscribed und dann die variable
 Codesys -> ROS2: Steuerung der Schildkröte mit Tastern
 Dafür werden die Items in Variablenlsite beschrieben und bei Datenänderung dann von mit einer ros2 node gepublished.
 
+# Setup für OPC UA Verbindung
 
+# Setup für CODESYS Virtual Control for Linux SL
+### 1. Deploy Tool installieren 
+Folgende Tools sind mit dem **Codesys Install Manager** zu installieren:
+* 'CODESYS Virtual Control for Linux SL'
+* 'CODESYS Control SL Deploy Tool'
+
+### 2. Verbindung zu WSL herstellen (SSH)
+SSH muss installiert und aktiviert sein unter WSL:
+```bash
+sudo apt update && sudo apt install -y openssh-server
+service ssh start
+``` 
+![Einloggen in Codesys](/doc/img/einloggen_ssh_codesys.png)
+
+### 3. Im Reiter **Bereitstellung** Images installieren
+Folgende Images sind zu installieren:
+* 'CODESYS Virtual Control for Linux SL Version 4.22.0(amd64)'
+*  'CODESYS Virtual Edge Gateway for Linux Version 4.22.0(amd64)'
+![Images installieren](/doc/img/images_v_sps_Codesys.png)
+
+### 4. Im Reiter **Operation** Container starten
+![Container VSPS starten](/doc/img/container_codesys_starten_v_sps.png)
+![Container Edge Gateway starten](/doc/img//container_codesys_starten_edge.png)
+
+### 5. Codesys Laufzeit Sicherheitsrichtlinie anpassen um anonymes einloggen zu erlauben
+![Laufzeit Sicherheitsrichtlinie in Codesys anpassen!](/doc/img/cod_laufzeit_sicherheitsrichtlinie.png)
+
+### 6. Verbindung Device herstellen
+![Verbindung zum Device herstellen!](/doc/img/device_verbiindung_codesys.png)
