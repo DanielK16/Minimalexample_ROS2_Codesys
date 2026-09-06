@@ -24,7 +24,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            "opc_node = minimalbeispiel_pkg.opc_ua_node:main"
+            "opc_node = minimalbeispiel_pkg.opc_ua_node:main",
+            "service_node = minimalbeispiel_pkg.opc_service_node:main"
         ],
     },
 )

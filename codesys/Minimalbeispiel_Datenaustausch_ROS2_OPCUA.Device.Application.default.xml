@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Symbolconfiguration xmlns="http://www.3s-software.com/schemas/Symbolconfiguration.xsd">
+  <Header>
+    <Version>3.5.14.0</Version>
+    <SymbolConfigObject version="4.7.0.0" runtimeid="3.5.22.30" libversion="4.6.0.0" compiler="3.5.22.20" lmm="3.5.22.20" profile="CODESYS V3.5 SP22 Patch 2+" settings="SupportOPCUA, LayoutCalculator=OptimizedClientSideLayoutCalculator" />
+    <ProjectInfo name="Minimalbeispiel_Datenaustausch_ROS2_OPCUA" devicename="Device" appname="Application" />
+  </Header>
+  <TypeList>
+    <TypeSimple name="T_BOOL" size="1" swapsize="0" typeclass="Bool" iecname="BOOL" />
+    <TypeSimple name="T_LREAL" size="8" swapsize="8" typeclass="LReal" iecname="LREAL" />
+    <TypeSimple name="T_REAL" size="4" swapsize="4" typeclass="Real" iecname="REAL" />
+    <TypeSimple name="T_STRING" size="81" swapsize="0" typeclass="String" iecname="STRING" />
+    <TypeUserDef name="T_geometry_msgs_msg_Twist" size="48" nativesize="48" typeclass="Userdef" pouclass="STRUCTURE" iecname="geometry_msgs_msg_Twist">
+      <UserDefElement iecname="linear_x" type="T_LREAL" byteoffset="0" vartype="VAR" access="ReadWrite" />
+      <UserDefElement iecname="linear_y" type="T_LREAL" byteoffset="8" vartype="VAR" access="ReadWrite" />
+      <UserDefElement iecname="linear_z" type="T_LREAL" byteoffset="16" vartype="VAR" access="ReadWrite" />
+      <UserDefElement iecname="angular_x" type="T_LREAL" byteoffset="24" vartype="VAR" access="ReadWrite" />
+      <UserDefElement iecname="angular_y" type="T_LREAL" byteoffset="32" vartype="VAR" access="ReadWrite" />
+      <UserDefElement iecname="angular_z" type="T_LREAL" byteoffset="40" vartype="VAR" access="ReadWrite" />
+    </TypeUserDef>
+    <TypeUserDef name="T_turtlesim_msg_pose" size="20" nativesize="20" typeclass="Userdef" pouclass="STRUCTURE" iecname="turtlesim_msg_pose">
+      <UserDefElement iecname="x_pose" type="T_REAL" byteoffset="0" vartype="VAR" access="ReadWrite" />
+      <UserDefElement iecname="y_pose" type="T_REAL" byteoffset="4" vartype="VAR" access="ReadWrite" />
+      <UserDefElement iecname="theta_pose" type="T_REAL" byteoffset="8" vartype="VAR" access="ReadWrite" />
+      <UserDefElement iecname="linear_velocity_pose" type="T_REAL" byteoffset="12" vartype="VAR" access="ReadWrite" />
+      <UserDefElement iecname="angular_velocity_pose" type="T_REAL" byteoffset="16" vartype="VAR" access="ReadWrite" />
+    </TypeUserDef>
+    <TypeUserDef name="T_turtlesim_srv_Spawn" size="180" nativesize="180" typeclass="Userdef" pouclass="STRUCTURE" iecname="turtlesim_srv_Spawn">
+      <UserDefElement iecname="xExecute" type="T_BOOL" byteoffset="0" vartype="VAR" access="ReadWrite" />
+      <UserDefElement iecname="req_x" type="T_REAL" byteoffset="4" vartype="VAR" access="ReadWrite" />
+      <UserDefElement iecname="req_y" type="T_REAL" byteoffset="8" vartype="VAR" access="ReadWrite" />
+      <UserDefElement iecname="req_theta" type="T_REAL" byteoffset="12" vartype="VAR" access="ReadWrite" />
+      <UserDefElement iecname="req_name" type="T_STRING" byteoffset="16" vartype="VAR" access="ReadWrite" />
+      <UserDefElement iecname="xDone" type="T_BOOL" byteoffset="97" vartype="VAR" access="ReadWrite" />
+      <UserDefElement iecname="xError" type="T_BOOL" byteoffset="98" vartype="VAR" access="ReadWrite" />
+      <UserDefElement iecname="resp_name" type="T_STRING" byteoffset="99" vartype="VAR" access="ReadWrite" />
+    </TypeUserDef>
+  </TypeList>
+  <NodeList>
+    <Node name="Application">
+      <Node name="GVL_OPCUA">
+        <Node name="PI" type="T_REAL" access="ReadWrite" />
+        <Node name="spawn" type="T_turtlesim_srv_Spawn" access="ReadWrite" />
+        <Node name="turtle1_cmd_vel" type="T_geometry_msgs_msg_Twist" access="ReadWrite" />
+        <Node name="turtle1_pose" type="T_turtlesim_msg_pose" access="ReadWrite" />
+      </Node>
+    </Node>
+  </NodeList>
+</Symbolconfiguration>
