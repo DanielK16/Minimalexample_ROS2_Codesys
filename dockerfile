@@ -1,20 +1,74 @@
 # Dockerfile für ROS2 Jazzy und OPC UA Connection Minimalbeispiel
+# Quellen:  YT Video: articulated robotics_ Crafting your dockerfile
+# - https://docs.docker.com/reference/dockerfile/
+# - https://docs.docker.com/engine/containers/run/
 
-# Basis Image für ros2 jazzy mit desktop anwendungen (rviz2)
-FROM osrf/ros:jazzy-desktop
+########################################
+# Basis Image für ros2 jazzy mit desktop anwendungen (rviz2, gazebo ,rqt)
+########################################
+FROM osrf/ros:jazzy-desktop-full
 
-# Arbeitsverzeichnis festlegen
-WORKDIR /Projektarbeit_Koerper
+########################################
+# Anlegen eines non root users
+########################################
+# 1. Alten ubuntu-User (UID 1000) entfernen, falls vorhanden
+RUN id -u 1000 &>/dev/null && userdel -r $(getent passwd 1000 | cut -d: -f1) || true
 
-# Tools und Dependencies installieren
-RUN apt-get update && apt-get upgrade -y
-RUN apt install python3-pip -y
+# ARG ohne Leerzeichen ausführen
+ARG USERNAME=ros  
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
 
-# break system pacakges bei jazzy benötigt
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME\
+    && mkdir /home/$USERNAME/.config && chown $USER_UID:$USER_GID /home/$USERNAME/.config
+
+# sudo rechte erteilen
+RUN echo "$USERNAME ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+
+# Alle Instruktionen danach werden als USER ros ausgeführt
+USER ros
+
+# Systemweite Packages müssen mit root erstellt werden
+# der letzte erwähnte user wird wird als standarmäig gesetzt wenn container startet
+# deswegen --user ros bei docker run
+USER root
+
+########################################
+# Systeminstallation als root
+########################################
+
+# System Abhängigkeiten Installieren 
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+    sudo \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Python Packages installieren
+# --break-system-pacakges erforderlich da sonst error
 RUN pip3 install asyncua --break-system-packages --ignore-installed cryptography
 
-# source ros2 direkt in bashrc schreiben damit automatisch gesourced
+
+########################################
+# USER ros Umgebung einrichten
+########################################
+USER ros
+
+# Arbeitsverzeichnis festlegen
+# wird mit -w im docker run festgelegt
+#WORKDIR /Projektarbeit_Koerper
+
+# source ros2 direkt in .bashrc schreiben damit automatisch gesourced
 RUN echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
+
+
+########################################
+# Standardmäßiger Start des Containers
+########################################
+# standardmäßig root als user
+# ros user wird über docker run engestellt mit --user ros
+USER root
 
 # Standard-Befehl beim Start des Containers welches programm er öffnen soll!
 CMD ["bash"]

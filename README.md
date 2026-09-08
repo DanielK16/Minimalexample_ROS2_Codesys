@@ -10,19 +10,24 @@ Das Gesamtsystem besteht aus:
 # Installation and Usage
 0. github in wsl workspace clonen
 ```
-git clone https://github.com/DanielK16/Minimalexample_ROS2_Codesys.git
+git clone https://github.com/DanielK16/Minimalbeispiel_Codesys_ROS2.git
 ```
 1. image bauen mit Dockerfile:
 ```
 docker build -t <image_name> .
 ```
 2. image -> container
+eventuell -v anpassen je nachdem wohin github gecloned wurde!
 ```
 docker run -it \
   --name minimalbsp_ros2_codesys \
+  --user ros \
+  --hostname ros_container \
+  --network=host \
   -e DISPLAY=$DISPLAY \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
-  -v ~/Minimalexample_ROS2_Codesys:/Minimalexample_ROS2_Codesys \
+  -v ~/Minimalbeispiel_Codesys_ROS2:/home/ros/Minimalbeispiel_Codesys_ROS2 \
+  -w /home/ros/Minimalbeispiel_Codesys_ROS2 \
   <image_name> \
   /bin/bash
 ```
