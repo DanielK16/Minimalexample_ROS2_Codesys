@@ -8,16 +8,18 @@ Das Gesamtsystem besteht aus:
 
 
 # Installation and Usage
-0. github in wsl workspace clonen
+0. Github in WSL workspace clonen
 ```
 git clone https://github.com/DanielK16/Minimalbeispiel_Codesys_ROS2.git
 ```
-1. image bauen mit Dockerfile:
+1. Dockerfile -> Image
+Passe `--build-arg` an, ob ROS 2 **Humble** oder **Jazzy** benötigt wird:
 ```
-docker build -t <image_name> .
+docker build -t --build-arg ROS_DISTRO=humble <image_name> .
 ```
-2. image -> container
+2. Image -> Container
 eventuell -v anpassen je nachdem wohin github gecloned wurde!
+auf Pfad achten -v!
 ```
 docker run -it \
   --name minimalbsp_ros2_codesys \
@@ -26,12 +28,14 @@ docker run -it \
   --network=host \
   -e DISPLAY=$DISPLAY \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
-  -v ~/Minimalbeispiel_Codesys_ROS2:/home/ros/Minimalbeispiel_Codesys_ROS2 \
-  -w /home/ros/Minimalbeispiel_Codesys_ROS2 \
+  -v ~/Minimalbeispiel_Codesys_ROS2/ros2_ws:/home/ros/ros2_ws \
+  -w /home/ros/ros2_ws \
   <image_name> \
   /bin/bash
 ```
 3. Codesys Projekt öffnen und mit Deploy Tool Container einrichten
+
+4. ROS2 Projekt bauen mit apt-get update, rosdep update, rosdep install..., colcon build
 
 # Entwicklungsumgebung
 |Tool|Version|Befehl zum Prüfen|
@@ -99,3 +103,13 @@ Folgende Images sind zu installieren:
 
 ### 6. Verbindung Device herstellen
 ![Verbindung zum Device herstellen!](/doc/img/device_verbiindung_codesys.png)
+
+
+# Aufbau tf transformations mycobot280
+Um den Aufbau des Transformationen Baums zu sehen kann man folgendes tool verwenden:
+tf2 übernimmt für uns die Arbeit der Transformationen!
+```
+ros2 run tf2_tools view_frames
+```
+![tf2_baum für mycobot280](/doc/img/tf2_Transformation.png)
+
